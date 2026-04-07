@@ -99,12 +99,7 @@ export function parseFeishuCommentTarget(target: string): CommentTarget | null {
   if (parts.length === 3) {
     [fileType, fileToken, commentId] = parts;
   } else if (parts.length === 4 && VALID_DELIVERY_MODES.has(parts[0])) {
-    [deliveryMode, fileType, fileToken, commentId] = parts as [
-      CommentDeliveryMode,
-      string,
-      string,
-      string,
-    ];
+    [deliveryMode, fileType, fileToken, commentId] = parts as [CommentDeliveryMode, string, string, string];
   } else {
     return null;
   }

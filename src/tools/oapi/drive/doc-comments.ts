@@ -447,7 +447,7 @@ export function registerDocCommentsTool(api: OpenClawPluginApi): boolean {
                 }),
                 { as: 'tenant' },
               );
-            } catch (firstErr) {
+            } catch (_firstErr) {
               // Fallback: 部分 API 版本使用 reply_elements 格式
               log.info(`doc_comments.reply: first attempt failed, trying reply_elements format`);
               res = await client.invoke(

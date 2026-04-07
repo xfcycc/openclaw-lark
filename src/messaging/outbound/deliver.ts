@@ -555,7 +555,7 @@ export async function sendCommentReplyLark(params: SendCommentReplyLarkParams): 
     } catch (secondErr) {
       const detail = formatLarkError(firstErr);
       log.error(`sendCommentReplyLark failed: ${detail}`);
-      throw new Error(`Comment reply failed: ${detail}`, { cause: firstErr });
+      throw new Error(`Comment reply failed: ${detail}`, { cause: secondErr });
     }
   }
 }

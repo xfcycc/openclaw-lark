@@ -9,7 +9,7 @@
  * dependencies needed to process the event.
  */
 
-import type { FeishuBotAddedEvent, FeishuDriveCommentEvent, FeishuMessageEvent, FeishuReactionCreatedEvent } from '../messaging/types';
+import type { FeishuBotAddedEvent, FeishuMessageEvent, FeishuReactionCreatedEvent } from '../messaging/types';
 import { handleFeishuMessage } from '../messaging/inbound/handler';
 import { handleFeishuReaction, resolveReactionContext } from '../messaging/inbound/reaction-handler';
 import { handleFeishuCommentEvent } from '../messaging/inbound/comment-handler';
@@ -256,7 +256,7 @@ export async function handleCommentEvent(ctx: MonitorContext, data: unknown): Pr
     const commentId = parsed.comment_id ?? '';
     const replyId = parsed.reply_id ?? '';
     // Parser has normalized notice_meta fields into canonical top-level fields
-    const senderOpenId = parsed.user_id?.open_id ?? '';
+    const _senderOpenId = parsed.user_id?.open_id ?? '';
     const isMentioned = parsed.is_mention ?? false;
     const eventTimestamp = parsed.action_time;
 
@@ -268,9 +268,7 @@ export async function handleCommentEvent(ctx: MonitorContext, data: unknown): Pr
     );
 
     // Dedup: build a deterministic key from the comment/reply IDs
-    const dedupKey = replyId
-      ? `comment:${commentId}:reply:${replyId}`
-      : `comment:${commentId}`;
+    const dedupKey = replyId ? `comment:${commentId}:reply:${replyId}` : `comment:${commentId}`;
     if (!ctx.messageDedup.tryRecord(dedupKey, accountId)) {
       log(`feishu[${accountId}]: duplicate comment event ${dedupKey}, skipping`);
       return;
